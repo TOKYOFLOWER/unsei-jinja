@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>本命星の設定 — 運勢神社</title>
+  <meta name="description" content="生年月日から本命星を算出し、運勢神社の表示をあなた向けに調整します。">
+  <meta name="theme-color" content="#B22222">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap">
+
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/jinja.css">
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/ga4.js"></script>
+</head>
+<body class="has-global-nav">
+  <header class="site-header">
+    <div class="misu" aria-hidden="true"></div>
+
+    <nav class="global-nav" aria-label="主要ナビゲーション">
+      <a href="./index.html">今日</a>
+      <a href="./direction.html">吉方位</a>
+      <a href="./month.html">月の運勢</a>
+      <a href="./action.html">行動表</a>
+      <a href="./setup.html" class="is-current">本命星</a>
+      <a href="./about.html">神社について</a>
+    </nav>
+
+    <div class="torii-wrap" aria-hidden="true">
+      <svg class="torii" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 18 Q120 -2 232 18 L232 32 Q120 13 8 32 Z" fill="currentColor"/>
+        <rect x="20" y="36" width="200" height="7" fill="currentColor"/>
+        <rect x="111" y="22" width="18" height="14" fill="#FFF8E7" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="48,43 56,43 58,135 46,135" fill="currentColor"/>
+        <polygon points="184,43 192,43 194,135 182,135" fill="currentColor"/>
+        <rect x="46" y="66" width="148" height="5" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <h1 class="site-title">本命星の設定</h1>
+    <p class="site-domain">jinja.tokyoflower.jp</p>
+  </header>
+
+  <div class="page-back">
+    <a href="./index.html">← 今日のページへ戻る</a>
+  </div>
+
+  <main class="container">
+    <section class="card">
+      <h2 class="section-heading">あなたの本命星</h2>
+
+      <div class="current-honmei" id="currentHonmei">
+        <span class="label">現在の設定</span>
+        <span class="star" id="currentStar">未設定</span>
+        <span class="birth" id="currentBirth"></span>
+      </div>
+
+      <div class="setup-form" id="setupForm" hidden>
+        <p style="text-align:center; color:var(--color-sumi-soft); font-size:0.95rem; margin-bottom:var(--space-md);">
+          生年月日を選択してください。<br>
+          九星気学のルールに基づき本命星を算出します。
+        </p>
+        <div class="birth-form">
+          <select id="birthYear" aria-label="生年"></select>
+          <select id="birthMonth" aria-label="生月"></select>
+          <select id="birthDay" aria-label="生日"></select>
+        </div>
+        <div class="honmei-preview" id="honmeiPreview">
+          <span class="placeholder">↑ 入力すると本命星が表示されます</span>
+        </div>
+        <div class="setup-actions">
+          <button class="btn btn-primary" id="saveBtn" disabled>保存する</button>
+          <button class="btn btn-ghost" id="cancelBtn">キャンセル</button>
+        </div>
+      </div>
+
+      <div class="setup-actions" id="defaultActions">
+        <button class="btn btn-primary" id="changeBtn">変更する</button>
+        <button class="btn btn-danger" id="clearBtn">すべての設定をクリア</button>
+      </div>
+
+      <p style="margin-top:var(--space-lg); font-size:0.85rem; color:var(--color-sumi-soft); line-height:1.7; text-align:center;">
+        生年月日と本命星はこの端末の localStorage にのみ保存されます。<br>
+        サーバーには送信されません。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="operator">銀座東京フラワー（株式会社GSD運営）</p>
+    <p class="contact">
+      <a href="https://tokyoflower.jp/contact/" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+    </p>
+    <p class="disclaimer">
+      本サービスで提供される運勢情報は、伝統的な暦と九星気学に基づく娯楽目的のものであり、特定の結果を保証するものではありません。重要な意思決定は、ご自身の判断でなさってください。
+    </p>
+    <p class="data-source">データ出典: shirabe.dev / koyomi.zingsystem.com</p>
+  </footer>
+
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/kyusei.js"></script>
+  <script src="./assets/js/pages/setup.js"></script>
+</body>
+</html>

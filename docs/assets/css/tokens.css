@@ -1,0 +1,32 @@
+:root {
+  /* 色 — 朱赤 × 金 × 墨 × 和紙 */
+  --color-shu: #B22222;
+  --color-shu-dark: #8B1A1A;
+  --color-gold: #C9A14A;
+  --color-gold-light: #E8D49A;
+  --color-sumi: #1A1A1A;
+  --color-sumi-soft: #4A4A4A;
+  --color-bg: #FFF8E7;
+  --color-bg-dark: #F0E6D2;
+  --color-shadow: rgba(26, 26, 26, 0.08);
+
+  /* タイポグラフィ */
+  --font-serif: 'Noto Serif JP', '游明朝', 'Yu Mincho', 'YuMincho', serif;
+  --font-display: 'Noto Serif JP', 'Hina Mincho', serif;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-display: 32px;
+
+  /* 余白 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+
+  /* 装飾 */
+  --border-shu: 2px solid var(--color-shu);
+  --shadow-card: 0 2px 8px var(--color-shadow);
+  --radius-card: 4px;
+}

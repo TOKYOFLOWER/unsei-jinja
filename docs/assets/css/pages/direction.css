@@ -1,0 +1,125 @@
+/* direction.html — 24方位コンパスページ */
+
+.compass-wrap {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-md) auto var(--space-lg);
+  max-width: 420px;
+}
+
+.compass-svg {
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+  display: block;
+}
+
+.compass-svg .compass-label {
+  font-family: var(--font-display);
+  font-size: 14px;
+  fill: var(--color-sumi);
+}
+
+.compass-svg .compass-group-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  fill: var(--color-shu);
+  letter-spacing: 0.05em;
+}
+
+.compass-svg .compass-center-sub {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  fill: var(--color-sumi-soft);
+  letter-spacing: 0.1em;
+}
+
+.compass-svg .compass-center-main {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--color-shu);
+  letter-spacing: 0.05em;
+}
+
+.compass-svg .compass-center-honmei {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  fill: var(--color-sumi);
+}
+
+.compass-guide {
+  background: var(--color-bg-dark);
+  border-left: 3px solid var(--color-gold);
+  padding: var(--space-md);
+  margin: var(--space-md) 0 var(--space-lg);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--color-sumi);
+}
+
+/* 凡例 */
+.compass-legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm) var(--space-md);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+.compass-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-sumi);
+}
+.compass-legend .swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-sumi-soft);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* 方位早見 (dl) */
+.compass-summary {
+  background: var(--color-bg-dark);
+  padding: var(--space-md);
+  border-radius: var(--radius-card);
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  row-gap: var(--space-sm);
+  font-size: 0.95rem;
+}
+.compass-summary dt {
+  color: var(--color-shu);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.compass-summary dd {
+  margin: 0;
+  color: var(--color-sumi);
+}
+.compass-summary dd.is-empty {
+  color: #999;
+}
+
+@media (max-width: 480px) {
+  .compass-svg .compass-label {
+    font-size: 11px;
+  }
+  .compass-svg .compass-group-label {
+    font-size: 9px;
+  }
+  .compass-svg .compass-center-main {
+    font-size: 14px;
+  }
+  .compass-summary {
+    grid-template-columns: 80px 1fr;
+    font-size: 0.85rem;
+  }
+  .compass-legend {
+    grid-template-columns: 1fr;
+  }
+}

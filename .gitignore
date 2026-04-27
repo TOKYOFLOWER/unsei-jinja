@@ -1,0 +1,25 @@
+# clasp
+gas/.clasp.json
+gas/.clasprc.json
+gas/node_modules/
+
+# misc
+.DS_Store
+*.log
+.env
+.env.local
+
+# 機密 (予防的)
+*.key
+*.pem
+*.secret
+.secrets/
+credentials.json
+
+# OS / Editor
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code (端末ローカル設定)
+.claude/settings.local.json

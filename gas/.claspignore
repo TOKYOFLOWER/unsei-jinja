@@ -1,0 +1,4 @@
+# clasp ignore patterns (rootDir 配下から push されるファイルを制御)
+**/node_modules/**
+**/*.bak
+**/*.tmp

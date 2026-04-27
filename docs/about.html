@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神社について — 運勢神社</title>
+  <meta name="description" content="運勢神社の運営・占いの仕組み・データ出典・プライバシー方針・免責事項。">
+  <meta name="theme-color" content="#B22222">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap">
+
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/jinja.css">
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/ga4.js"></script>
+</head>
+<body class="has-global-nav">
+  <header class="site-header">
+    <div class="misu" aria-hidden="true"></div>
+
+    <nav class="global-nav" aria-label="主要ナビゲーション">
+      <a href="./index.html">今日</a>
+      <a href="./direction.html">吉方位</a>
+      <a href="./month.html">月の運勢</a>
+      <a href="./action.html">行動表</a>
+      <a href="./setup.html">本命星</a>
+      <a href="./about.html" class="is-current">神社について</a>
+    </nav>
+
+    <div class="torii-wrap" aria-hidden="true">
+      <svg class="torii" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 18 Q120 -2 232 18 L232 32 Q120 13 8 32 Z" fill="currentColor"/>
+        <rect x="20" y="36" width="200" height="7" fill="currentColor"/>
+        <rect x="111" y="22" width="18" height="14" fill="#FFF8E7" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="48,43 56,43 58,135 46,135" fill="currentColor"/>
+        <polygon points="184,43 192,43 194,135 182,135" fill="currentColor"/>
+        <rect x="46" y="66" width="148" height="5" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <h1 class="site-title">神社について</h1>
+    <p class="site-domain">jinja.tokyoflower.jp</p>
+  </header>
+
+  <div class="page-back">
+    <a href="./index.html">← 今日のページへ戻る</a>
+  </div>
+
+  <main class="container">
+    <section class="card">
+      <div class="about-section">
+        <h2 class="section-heading">運勢神社とは</h2>
+        <p>
+          日本の伝統的な暦（六曜・二十四節気・暦注）と、東洋占星術の柱である九星気学を組み合わせ、
+          一日の運勢の流れと吉方位を、本命星に応じて毎日お届けする運勢サービスです。
+        </p>
+        <p>
+          特定の宗派や信仰に属するものではなく、長く親しまれてきた暦の知恵を、
+          現代の生活に寄り添う形で提示します。
+        </p>
+      </div>
+
+      <div class="about-section">
+        <h2 class="section-heading">占いの仕組み</h2>
+        <ul>
+          <li>暦データは <a href="https://shirabe.dev" target="_blank" rel="noopener noreferrer">shirabe.dev</a> から取得しています（六曜・暦注・干支・二十四節気）。</li>
+          <li>九星気学の本命星・月命星・日盤・月盤・年盤は、当サービス内で計算しています。</li>
+          <li>方位の吉凶は、本命星と日盤の中央星から、五黄殺・暗剣殺・本命殺・本命的殺・歳破・月破・日破を判定します。</li>
+          <li>個別の運勢文章は、上記すべてを踏まえて Anthropic 社の Claude AI が日次で生成しています。</li>
+        </ul>
+      </div>
+
+      <div class="about-section">
+        <h2 class="section-heading">運営</h2>
+        <p>
+          <strong>銀座東京フラワー</strong>（株式会社GSD運営）<br>
+          1981年創業。銀座の生花店として、結婚式・葬儀・贈答用のフラワーアレンジメントをお届けしています。
+        </p>
+        <ul>
+          <li>公式サイト: <a href="https://tokyoflower.jp/" target="_blank" rel="noopener noreferrer">tokyoflower.jp</a></li>
+          <li>お問い合わせ: <a href="https://tokyoflower.jp/contact/" target="_blank" rel="noopener noreferrer">tokyoflower.jp/contact/</a></li>
+        </ul>
+      </div>
+
+      <div class="about-section">
+        <h2 class="section-heading">データ出典</h2>
+        <ul>
+          <li><a href="https://shirabe.dev" target="_blank" rel="noopener noreferrer">shirabe.dev</a> — 暦・六曜・暦注 API</li>
+          <li><a href="https://koyomi.zingsystem.com/" target="_blank" rel="noopener noreferrer">koyomi.zingsystem.com</a> — 暦の参照</li>
+        </ul>
+      </div>
+
+      <div class="about-section">
+        <h2 class="section-heading">プライバシーポリシー</h2>
+        <p>
+          ユーザーの本命星と生年月日は、お使いの端末の <code>localStorage</code> にのみ保存されます。
+          当サービスのサーバーには一切送信されません。
+        </p>
+        <p>
+          アクセスログには、日付・参照ページ・本命星（数値）のみを記録しており、
+          IP アドレスや個人を特定できる情報は保存していません。
+        </p>
+        <p>
+          サイト改善のため、Google Analytics 4 によるアクセス解析を導入しています。
+          IP 匿名化は有効化済みです。
+        </p>
+      </div>
+
+      <div class="about-section">
+        <h2 class="section-heading">免責事項</h2>
+        <p>
+          本サービスで提供される運勢情報は、伝統的な暦と九星気学に基づく娯楽目的のものであり、
+          特定の結果を保証するものではありません。
+        </p>
+        <p>
+          重要な意思決定（医療・法的判断・金融取引等）に際しては、本サービスの記述に依拠せず、
+          必ず専門家にご相談のうえご自身の判断でなさってください。
+        </p>
+        <p>
+          当サービスの利用によって生じたいかなる損害についても、運営者は責任を負いかねます。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="operator">銀座東京フラワー（株式会社GSD運営）</p>
+    <p class="contact">
+      <a href="https://tokyoflower.jp/contact/" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+    </p>
+    <p class="disclaimer">
+      本サービスで提供される運勢情報は、伝統的な暦と九星気学に基づく娯楽目的のものであり、特定の結果を保証するものではありません。重要な意思決定は、ご自身の判断でなさってください。
+    </p>
+    <p class="data-source">データ出典: shirabe.dev / koyomi.zingsystem.com</p>
+  </footer>
+
+  <script>
+    if (window.trackEvent) trackEvent('view_about');
+  </script>
+</body>
+</html>

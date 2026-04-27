@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行動表 — 運勢神社</title>
+  <meta name="description" content="時間帯ごとの吉凶と推奨行動を、本命星に合わせて表示します。">
+  <meta name="theme-color" content="#B22222">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&display=swap">
+
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/jinja.css">
+
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/ga4.js"></script>
+</head>
+<body class="has-global-nav">
+  <header class="site-header">
+    <div class="misu" aria-hidden="true"></div>
+
+    <nav class="global-nav" aria-label="主要ナビゲーション">
+      <a href="./index.html">今日</a>
+      <a href="./direction.html">吉方位</a>
+      <a href="./month.html">月の運勢</a>
+      <a href="./action.html" class="is-current">行動表</a>
+      <a href="./setup.html">本命星</a>
+      <a href="./about.html">神社について</a>
+    </nav>
+
+    <div class="torii-wrap" aria-hidden="true">
+      <svg class="torii" viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 18 Q120 -2 232 18 L232 32 Q120 13 8 32 Z" fill="currentColor"/>
+        <rect x="20" y="36" width="200" height="7" fill="currentColor"/>
+        <rect x="111" y="22" width="18" height="14" fill="#FFF8E7" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="48,43 56,43 58,135 46,135" fill="currentColor"/>
+        <polygon points="184,43 192,43 194,135 182,135" fill="currentColor"/>
+        <rect x="46" y="66" width="148" height="5" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <h1 class="site-title">行動表</h1>
+    <p class="site-domain">jinja.tokyoflower.jp</p>
+    <p class="today-date" id="todayDate">読込中…</p>
+  </header>
+
+  <div class="page-back">
+    <a href="./index.html">← 今日のページへ戻る</a>
+  </div>
+
+  <main class="container">
+    <section class="card" id="actionCard" hidden>
+      <h2 class="honmei-title" id="honmeiTitle"></h2>
+
+      <p class="compass-guide" id="actionLead"></p>
+
+      <h3 class="card-section-title">時間帯ごとの吉凶</h3>
+      <div class="action-list" id="actionList"></div>
+
+      <h3 class="card-section-title">本日のやるべきこと</h3>
+      <ul class="todo-list" id="todoList"></ul>
+
+      <h3 class="card-section-title">やらない方がいいこと</h3>
+      <ul class="avoid-list" id="avoidList"></ul>
+    </section>
+
+    <div class="card status-card" id="statusCard">
+      <p id="statusMessage">読込中…</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p class="operator">銀座東京フラワー（株式会社GSD運営）</p>
+    <p class="contact">
+      <a href="https://tokyoflower.jp/contact/" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+    </p>
+    <p class="disclaimer">
+      本サービスで提供される運勢情報は、伝統的な暦と九星気学に基づく娯楽目的のものであり、特定の結果を保証するものではありません。重要な意思決定は、ご自身の判断でなさってください。
+    </p>
+    <p class="data-source">データ出典: shirabe.dev / koyomi.zingsystem.com</p>
+  </footer>
+
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/kyusei.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script>
+  (function() {
+    const SLOTS = [
+      { key: 'morning',   name: '朝',   hours: '6時 〜 11時',  startHour: 6,  endHour: 11 },
+      { key: 'noon',      name: '正午', hours: '11時 〜 13時', startHour: 11, endHour: 13 },
+      { key: 'afternoon', name: '午後', hours: '13時 〜 17時', startHour: 13, endHour: 17 },
+      { key: 'evening',   name: '夕',   hours: '17時 〜 22時', startHour: 17, endHour: 22 }
+    ];
+
+    function todayJSTString() {
+      const now = new Date();
+      const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      return jst.toISOString().slice(0, 10);
+    }
+
+    function jstHour() {
+      const now = new Date();
+      const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      return jst.getUTCHours();
+    }
+
+    function setStatus(html) {
+      document.getElementById('actionCard').hidden = true;
+      document.getElementById('statusCard').hidden = false;
+      document.getElementById('statusMessage').innerHTML = html;
+    }
+
+    function markFlavor(mark) {
+      if (mark === '吉') return { className: 'mark-kichi', verb: '推奨' };
+      if (mark === '凶') return { className: 'mark-kyou', verb: '控えめに' };
+      return { className: '', verb: '中庸' };
+    }
+
+    function actionTextFor(slot, mark) {
+      const f = markFlavor(mark);
+      if (mark === '吉') {
+        return slot.name + 'の時間帯は運気が味方します。重要な連絡や決断、外出はこの時間に。';
+      }
+      if (mark === '凶') {
+        return slot.name + 'の時間帯は流れが乱れがち。新しいことの着手は避け、整理や休息に充てましょう。';
+      }
+      return slot.name + 'の時間帯は穏やかに。普段通りのペースで過ごすのが吉。';
+    }
+
+    function fillList(id, items) {
+      const ul = document.getElementById(id);
+      ul.innerHTML = '';
+      if (!items || items.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = '—';
+        ul.appendChild(li);
+        return;
+      }
+      items.forEach(function(it) {
+        const li = document.createElement('li');
+        li.textContent = String(it);
+        ul.appendChild(li);
+      });
+    }
+
+    function renderActionCards(general) {
+      const container = document.getElementById('actionList');
+      container.innerHTML = '';
+      const nowH = jstHour();
+
+      SLOTS.forEach(function(slot) {
+        const mark = general['time_' + slot.key] || '—';
+        const flavor = markFlavor(mark);
+        const isNow = nowH >= slot.startHour && nowH < slot.endHour;
+
+        const card = document.createElement('div');
+        card.className = 'action-card' + (isNow ? ' is-now' : '');
+
+        const slotEl = document.createElement('div');
+        slotEl.className = 'slot';
+        const nameEl = document.createElement('span');
+        nameEl.className = 'name';
+        nameEl.textContent = slot.name;
+        const hoursEl = document.createElement('span');
+        hoursEl.className = 'hours';
+        hoursEl.textContent = slot.hours;
+        slotEl.appendChild(nameEl);
+        slotEl.appendChild(hoursEl);
+
+        const body = document.createElement('div');
+        body.className = 'body';
+        const markEl = document.createElement('span');
+        markEl.className = 'mark ' + flavor.className;
+        markEl.textContent = mark;
+        const textEl = document.createElement('div');
+        textEl.className = 'text';
+        textEl.textContent = actionTextFor(slot, mark);
+
+        body.appendChild(markEl);
+        body.appendChild(document.createTextNode(' ' + flavor.verb));
+        body.appendChild(textEl);
+
+        card.appendChild(slotEl);
+        card.appendChild(body);
+        container.appendChild(card);
+      });
+    }
+
+    async function load(honmeisho) {
+      const date = todayJSTString();
+      try {
+        const data = await fetchDaily(date, honmeisho);
+        if (!data || !data.general || !data.personal) {
+          setStatus('データを取得できませんでした。');
+          return;
+        }
+
+        document.getElementById('todayDate').textContent =
+          (data.general.wareki || '') + (data.general.dayOfWeek_ja ? '（' + data.general.dayOfWeek_ja + '）' : '');
+
+        const honmeiName = data.honmeisho_name || HONMEISHO_NAMES[honmeisho] || '';
+        document.getElementById('honmeiTitle').textContent = honmeiName + 'のあなたの本日の行動指針';
+
+        document.getElementById('actionLead').textContent =
+          '本日は' + (data.general.rokuyo_name || '—') + '。'
+          + '時間帯ごとの吉凶と、暦から導いた行動指針です。'
+          + '現在時刻に該当する時間帯はハイライト表示されます。';
+
+        renderActionCards(data.general);
+        fillList('todoList', data.personal.to_do);
+        fillList('avoidList', data.personal.to_avoid);
+
+        document.getElementById('actionCard').hidden = false;
+        document.getElementById('statusCard').hidden = true;
+
+        if (window.trackEvent) trackEvent('view_action', { honmeisho: honmeisho });
+        touchLastSeen();
+      } catch (err) {
+        console.error('fetchDaily failed', err);
+        setStatus(
+          '<strong>データ準備中です。</strong><br>' +
+          '少し時間をおいて再度お試しください。<br>' +
+          '<small style="color:#999">（' + (err.message || err) + '）</small>'
+        );
+      }
+    }
+
+    function init() {
+      const h = getHonmeisho();
+      if (!h) {
+        setStatus('本命星が未設定です。<br><a href="./setup.html" style="color:var(--color-shu); text-decoration:underline;">本命星を設定する →</a>');
+        return;
+      }
+      load(h);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>
